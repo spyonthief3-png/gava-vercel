@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
-import { Plus, Edit, Trash2, Search } from 'lucide-react';
+import { Plus, Edit, Trash2, Search, FileText } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { gerarRelatorioDoacoesPDF } from '../utils/pdfReports';
 
 export default function DoacoesListPage() {
     const [doacoes, setDoacoes] = useState<any[]>([]);
@@ -42,9 +43,17 @@ export default function DoacoesListPage() {
         <div>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <h1 className="text-2xl font-bold text-gray-800">Doações</h1>
-                <Link to="/doacoes/registrar" className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2.5 rounded-lg hover:bg-blue-700 text-sm font-semibold">
-                    <Plus size={18} /> Registrar Doação
-                </Link>
+                <div className="flex gap-2">
+                    {doacoes.length > 0 && (
+                        <button onClick={() => gerarRelatorioDoacoesPDF(doacoes, filters)}
+                            className="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2.5 rounded-lg hover:bg-red-700 text-sm font-semibold">
+                            <FileText size={18} /> Gerar PDF
+                        </button>
+                    )}
+                    <Link to="/doacoes/registrar" className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2.5 rounded-lg hover:bg-blue-700 text-sm font-semibold">
+                        <Plus size={18} /> Registrar Doação
+                    </Link>
+                </div>
             </div>
 
             {/* Filters */}
